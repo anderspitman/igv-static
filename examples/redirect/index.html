@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+
+<body>
+  <div style='text-align: center;'>
+    <button id='launch'>Pileup</button>
+  </div>
+
+  <script>
+
+    const button = document.getElementById('launch')
+    button.style.width = '400px';
+    button.style.height = '200px';
+    button.style.fontSize = '80px';
+    button.style.fontWeight = 'bold';
+    button.style.color = 'white';
+    button.style.backgroundColor = 'red';
+    button.style.marginTop= '250px';
+
+    button.addEventListener('click', () => {
+      const urlBase = 'http://localhost:8083/'
+
+      const config = encodeURIComponent(JSON.stringify({
+        reference: {
+          fastaURL: 'https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta',
+        },
+        locus: 'chr8:128,747,267-128,754,546',
+        tracks: [
+          {
+            name: "Variants", 
+            type: "variant",
+            format: "vcf",
+            url: 'https://s3.amazonaws.com/iobio/samples/vcf/platinum-exome.vcf.gz',
+          },
+          {
+            type: 'alignment',
+            format: 'bam',
+            url: 'https://s3.amazonaws.com/iobio/samples/bam/NA12878.exome.bam',
+            name: 'Proband'
+          },
+          {
+            type: 'alignment',
+            format: 'bam',
+            url: 'https://s3.amazonaws.com/iobio/samples/bam/NA12892.exome.bam',
+            name: 'Mother'
+          },
+          {
+            type: 'alignment',
+            format: 'bam',
+            url: 'https://s3.amazonaws.com/iobio/samples/bam/NA12891.exome.bam',
+            name: 'Father'
+          },
+        ]
+      }))
+
+      console.log(config)
+      const url = urlBase + '?config=' + config
+
+      window.open(url, '_blank')
+    })
+  </script>
+</body>
+
+
